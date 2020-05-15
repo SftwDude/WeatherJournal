@@ -1,7 +1,18 @@
+class JournalEntry {
+    constructor(date,feelings,temperature)
+    {
+        this.date = date;
+        this.feelings = feelings;
+        this.temperature = temperature; 
+    }
+}
+
 /* Global Variables */
 let baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 let apiKey = '&appid=77eb9eb366ce5b4d72d4edb6560b06f6';
 let units = '&units=imperial';
+
+let temperature = 0;
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -11,8 +22,17 @@ document.getElementById('generate').addEventListener('click', performAction);
 
 function performAction(e){
 const newZip =  document.getElementById('zip').value;
-getWeather(baseURL,newZip, units, apiKey)
+//getWeather(baseURL,newZip, units, apiKey).then(w => {temperature = w.main.temp; console.log(`temperature:${temperature}`)});
+getWeather(baseURL,newZip, units, apiKey).then(w => {addJournalEntry(new JournalEntry(newDate,"felling blue",w.main.temp))});
 
+
+//retrieveData('http://localhost:3000/all');
+
+}
+function addJournalEntry(journalEntry)
+{
+    console.log(journalEntry);
+    postData('http://localhost:3000/entry',journalEntry).then(retrieveData('http://localhost:3000/all').then(d => d.map(k => console.log(`retrieved:${k.date}`))));
 }
 const getWeather = async (baseURL, zip, key, units)=>{
 
