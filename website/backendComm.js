@@ -10,14 +10,7 @@ const postData = async ( url = '', data = {})=>{
     },
     body: JSON.stringify(data), // body data type must match "Content-Type" header        
   });
-
-/*     try {
-      const newData = await response.json();
-      return newData
-    }catch(error) {
-    console.log("error", error);
-    }
- */}
+}
 
 // Async GET
 const retrieveData = async (url='') =>{ 
@@ -25,11 +18,10 @@ const retrieveData = async (url='') =>{
     try {
     // Transform into JSON
     const allData = await request.json()
-    console.log(`retreiveData: ${allData}`);
     return allData;
     }
     catch(error) {
-      console.log("error", error);
       // appropriately handle the error
+      alert(`error retrieving data: ${error}`);
     }
   }

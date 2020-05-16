@@ -1,9 +1,11 @@
 class JournalEntry {
   constructor(date, feelings, temperature) {
+    this.key = Date.parse(new Date()); //date stored in msec. convert it to a date object: var d = new Date(key);
     this.date = date;
     this.feelings = feelings;
     this.temperature = temperature;
   }
+  key;
 }
 
 /* Global Variables */
@@ -22,36 +24,34 @@ document.getElementById('generate').addEventListener('click', performAction);
 function performAction(e) {
   const newZip = document.getElementById('zip').value;
   const feelings = document.getElementById('feelings').value;
-  getWeather(baseURL, newZip, units, apiKey).then(w => { addJournalEntry(new JournalEntry(newDate, feelings, w.main.temp)) });
-
-
-  retrieveData('http://localhost:3000/all').then(d => d.map(k => console.log(`retrieved:${k.date}`)));
-
+  
+  getWeatherInfo(baseURL, newZip, units, apiKey)
+  .then(w => { addJournalEntry(new JournalEntry(newDate, feelings, w.main.temp)) })
+  .catch(error => { alert(`error caught:${error.message}`); });
 }
 function addJournalEntry(journalEntry) {
-  //console.log(journalEntry);
   postData('http://localhost:3000/entry', journalEntry)
     .then(retrieveData('http://localhost:3000/all')
       .then(d => updateUILatestJournalEntry(new JournalEntry(d[d.length - 1].date,
-                                                             d[d.length - 1].feelings,
-                                                             d[d.length - 1].temperature))));
+        d[d.length - 1].feelings,
+        d[d.length - 1].temperature))));
 }
-const getWeather = async (baseURL, zip, key, units) => {
 
-  const res = await fetch(baseURL + zip + units + key)
+const getWeatherInfo = async (baseURL, zip, key, units) => {
   try {
-
-    const data = await res.json();
-    //console.log(data)
-    return data;
+    const response = await fetch(baseURL + zip + units + key)
+    if (response.ok) {
+      return response.json();;
+    }
+    else {
+      return Promise.reject({ message: `url: ${new URL(response.url).pathname} status: ${response.status} ${response.statusText}` });
+    }
   } catch (error) {
-    console.log("error", error);
-    // appropriately handle the error
+    alert(error);
   }
 }
 
 function updateUILatestJournalEntry(journalEntry) {
-  console.log(`updateUILatestJournalEntry ${journalEntry}`);
   document.getElementById('date').innerHTML = `Date: ${journalEntry.date}`;
   document.getElementById('temp').innerHTML = `Temperature: ${journalEntry.temperature} \xB0F`;
   document.getElementById('content').innerHTML = `Entry: ${journalEntry.feelings}`;

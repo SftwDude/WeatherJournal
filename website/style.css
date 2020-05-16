@@ -16,35 +16,44 @@ body{
     font-family: 'Oswald', sans-serif;
 }
 
-.holder{
-
+.headline{
+    padding: 60px;
+    text-align: center;
+    color: blue;
+    font-size: 30px;
+    background-image: url('assests/weather.png');
 }
 
 .entry{
     background: rgba(59, 74, 107, .4);
+    box-shadow: 0 0 1em 1em #ccc;
 }
 
 #entryHolder{
-
+    padding-top:100px;
 }
 
 #date{
-
+    padding-left:20px;
 }
 
 #temp{
-
+    padding-left:20px;
 }
 
 #content{
-
+    padding-left:20px;
 }
 
-.headline {
-
+.holder {
+    display:block;
 }
 .title{
-
+    font-size: 150%;
+    text-shadow: 1px 1px 1px #ccc;
+}
+.myInput{
+    max-height: 200px;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
