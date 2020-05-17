@@ -1,6 +1,6 @@
 
 // Setup empty JS object to act as endpoint for all routes
-projectData = [];
+projectData = {};
 
 // Require Express to run server and routes
 const express = require('express');
@@ -27,7 +27,6 @@ const port = 3000;
 /* Spin up the server*/
 const server = app.listen(port, listening);
 function listening() {
-    // console.log(server);
     console.log(`running on localhost: ${port}`);
 };
 
@@ -45,13 +44,12 @@ function callBack(req,res){
   res.send('POST received');
 }
 
-// POST an journal entry
+// POST a journal entry
 app.post('/entry', addJournalEntry);
 
 function addJournalEntry (req,res){
-    console.log(req.body);
-    projectData.push(req.body);
-    res.send('POST received...');
+    projectData[req.body.key] = req.body;
+    res.send('POST received');
 };
 
 
