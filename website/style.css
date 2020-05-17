@@ -30,19 +30,20 @@ body{
 }
 
 #entryHolder{
-    padding-top:100px;
+    
+    padding-left:20px;
 }
 
 #date{
-    padding-left:20px;
+    
 }
 
 #temp{
-    padding-left:20px;
+    
 }
 
 #content{
-    padding-left:20px;
+    
 }
 
 .holder {
